@@ -19,8 +19,10 @@ type Product struct {
 
 func ServerStart() {
 	e := echo.New()
-	e.GET("/:id", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Dojo Kun")
+	e.GET("/", func(c echo.Context) error {
+		p := new(Product)
+		p.ID = "1"
+		return c.JSON(http.StatusOK, p)
 	})
 	e.POST("/", saveProduct)
 
@@ -33,7 +35,9 @@ func saveProduct(c echo.Context) error {
 	p := new(Product)
 	c.Bind(p)
 
-	fmt.Print(p)
+	products[p.ID] = p
+
+	fmt.Println(products[p.ID])
 
 	return c.JSON(http.StatusOK, p)
 }
